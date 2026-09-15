@@ -1,0 +1,35 @@
+/*
+DATABASE  & SCHEMA 
+-------------------------------------------------------------------------------
+Scop: 
+Scriptul va genera o baza de date noua cu numele DataWarehaouse nu inainte de averifica daca aceasta exista deja.
+Daca exista o va sterge si o va recrea din nou. Suplimentar au fost adaugate 3 Schema pentru cele trei niveluri ale bazei de date:
+bronze, silver, gold
+
+Atentionari!!!
+Scriptul va duce la stergerea totala a bazei de date daca ea exista.
+Toate datele vor fi sterse permanent. Asigura-te ca ai facut backup inainte sa rulezi scriptul
+--------------------------------------------------------------------------------
+*/
+USE master;
+GO
+
+--Sterge baza de date daca acesata exista si recreeaz-o --
+IF EXISTS (SELECT 1 FROM sys.databases WHERE name = 'DataWarehouse')
+BEGIN
+	ALTER DATABASE DataWarehouse SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+	DROP DATABASE DataWarehouse;
+	END;
+	GO
+
+--Creaza baza de date DateWarehouse--
+CREATE DATABASE DataWarehouse;
+USE DataWarehouse; 
+
+--Creaza Schema pentru cele trei nivele: brons, silver si gold--
+CREATE SCHEMA bronze;
+GO
+CREATE SCHEMA silver;
+GO
+CREATE SCHEMA gold;
+GO
